@@ -19,6 +19,7 @@ const words = [
 let randomWord;
 let score = 0;
 let time = 10;
+let highScore = localStorage.getItem("highScore") || 0;
 
 let difficulty = localStorage.getItem("difficulty") || "medium";
 difficultySelect.value = difficulty;
@@ -38,6 +39,11 @@ function addWordToDOM() {
 function updateScore() {
   score++;
   scoreEl.innerText = score;
+
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem("highScore", highScore);
+  }
 }
 
 // Timer
@@ -61,6 +67,7 @@ function gameOver() {
   endgameEl.innerHTML = `
     <h1>Game Over</h1>
     <p>Score: ${score}</p>
+    <p>High Score: ${highScore}</p>
     <button onclick="location.reload()">Restart</button>
   `;
 }
