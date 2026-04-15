@@ -1,113 +1,129 @@
-// DOM
+// MATRIX BACKGROUND (NO HTML EDIT)
+const canvas = document.createElement("canvas");
+canvas.id = "matrix";
+document.body.appendChild(canvas);
+
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*+-";
+const fontSize = 14;
+
+let columns = Math.floor(canvas.width / fontSize);
+let drops = Array(columns).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#00ff00";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const char = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+
+    drops[i]++;
+  }
+}
+
+setInterval(drawMatrix, 33);
+
+// GAME LOGIC
 const word = document.getElementById("word");
 const text = document.getElementById("text");
 const scoreEl = document.getElementById("score");
 const timeEl = document.getElementById("time");
-const endgameEl = document.getElementById("end-game-container");
-const settings = document.getElementById("settings");
+const endGameEl = document.getElementById("end-game-container");
+
 const settingsBtn = document.getElementById("settings-btn");
-const settingsForm = document.getElementById("settings-form");
+const settings = document.getElementById("settings");
 const difficultySelect = document.getElementById("difficulty");
 
-// Words
 const words = [
-  "dependent","dog","superficial","admit","juice","javascript",
-  "developer","airplane","great","fun","manipulate","cat",
-  "transition","school","computer","programming","drag","loving","north"
+  "apple","banana","computer","javascript","typing",
+  "keyboard","screen","developer","function","variable"
 ];
 
 let randomWord;
 let score = 0;
 let time = 10;
-let highScore = localStorage.getItem("highScore") || 0;
+let timeInterval;
+let difficulty = "easy";
 
-let difficulty = localStorage.getItem("difficulty") || "medium";
-difficultySelect.value = difficulty;
-
-// Random word
+// WORD
 function getRandomWord() {
   return words[Math.floor(Math.random() * words.length)];
 }
 
-// Add word
-function addWordToDOM() {
+function addWord() {
   randomWord = getRandomWord();
   word.innerText = randomWord;
 }
 
-// Update score
+// SCORE
 function updateScore() {
   score++;
   scoreEl.innerText = score;
-
-  if (score > highScore) {
-    highScore = score;
-    localStorage.setItem("highScore", highScore);
-  }
 }
 
-// Timer
-function updateTime() {
-  time--;
-
-  if (time <= 0) {
-    time = 0;
-    timeEl.innerText = "0s";
-    clearInterval(timer);
-    gameOver();
-    return;
-  }
-
-  timeEl.innerText = time + "s";
-}
-
-// Game over
+// GAME OVER
 function gameOver() {
-  endgameEl.style.display = "flex";
-  endgameEl.innerHTML = `
-    <h1>Game Over</h1>
+  clearInterval(timeInterval);
+
+  endGameEl.innerHTML = `
+    <h2>Game Over</h2>
     <p>Score: ${score}</p>
-    <p>High Score: ${highScore}</p>
     <button onclick="location.reload()">Restart</button>
   `;
 }
 
-// Input
-text.addEventListener("input", (e) => {
-  if (e.target.value === randomWord) {
-    handleCorrectWord();
-  }
-});
+// TIMER
+function updateTime() {
+  time--;
+  timeEl.innerText = time + "s";
 
-// ENTER support
-text.addEventListener("keyup", (e) => {
-  if (e.key === "Enter" && text.value === randomWord) {
-    handleCorrectWord();
-  }
-});
-
-function handleCorrectWord() {
-  updateScore();
-  addWordToDOM();
-
-  if (difficulty === "hard") time += 2;
-  else if (difficulty === "medium") time += 3;
-  else time += 5;
-
-  text.value = "";
+  if (time === 0) gameOver();
 }
 
-// Settings
+function startTimer() {
+  timeInterval = setInterval(updateTime, 1000);
+}
+
+// START
+function init() {
+  addWord();
+  startTimer();
+}
+init();
+
+// INPUT
+text.addEventListener("input", (e) => {
+  if (e.target.value === randomWord) {
+    updateScore();
+    e.target.value = "";
+    addWord();
+
+    time = difficulty === "hard" ? 3 : difficulty === "medium" ? 5 : 10;
+    timeEl.innerText = time + "s";
+  }
+});
+
+// SETTINGS
 settingsBtn.addEventListener("click", () => {
-  settings.classList.toggle("hide");
+  settings.classList.toggle("show");
 });
 
-settingsForm.addEventListener("change", (e) => {
+difficultySelect.addEventListener("change", (e) => {
   difficulty = e.target.value;
-  localStorage.setItem("difficulty", difficulty);
 });
-
-// Start
-addWordToDOM();
-text.focus();
-const timer = setInterval(updateTime, 1000);
