@@ -36,12 +36,16 @@ function updateScore() {
 // Timer
 function updateTime() {
   time--;
-  timeEl.innerText = time + "s";
 
-  if (time === 0) {
+  if (time <= 0) {
+    time = 0;
+    timeEl.innerText = "0s";
     clearInterval(timer);
     gameOver();
+    return;
   }
+
+  timeEl.innerText = time + "s";
 }
 
 // Game over
