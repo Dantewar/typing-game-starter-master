@@ -75,16 +75,27 @@ function gameOver() {
 // Input
 text.addEventListener("input", (e) => {
   if (e.target.value === randomWord) {
-    updateScore();
-    addWordToDOM();
-
-    if (difficulty === "hard") time += 2;
-    else if (difficulty === "medium") time += 3;
-    else time += 5;
-
-    text.value = "";
+    handleCorrectWord();
   }
 });
+
+// ENTER support
+text.addEventListener("keyup", (e) => {
+  if (e.key === "Enter" && text.value === randomWord) {
+    handleCorrectWord();
+  }
+});
+
+function handleCorrectWord() {
+  updateScore();
+  addWordToDOM();
+
+  if (difficulty === "hard") time += 2;
+  else if (difficulty === "medium") time += 3;
+  else time += 5;
+
+  text.value = "";
+}
 
 // Settings
 settingsBtn.addEventListener("click", () => {
@@ -98,4 +109,5 @@ settingsForm.addEventListener("change", (e) => {
 
 // Start
 addWordToDOM();
+text.focus();
 const timer = setInterval(updateTime, 1000);
