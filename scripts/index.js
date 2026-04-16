@@ -64,7 +64,8 @@ let randomWord;
 let score = 0;
 let time = 10;
 let timeInterval;
-let difficulty = "easy";
+let difficulty = localStorage.getItem("difficulty") || "easy";
+let highScore = localStorage.getItem("highScore") || 0;
 
 // ================= WORD =================
 function getRandomWord() {
@@ -80,6 +81,11 @@ function addWordToDOM() {
 function updateScore() {
   score++;
   scoreEl.innerText = score;
+
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem("highScore", highScore);
+  }
 }
 
 // ================= TIME =================
@@ -104,7 +110,8 @@ function gameOver() {
   endGameEl.style.display = "flex";
   endGameEl.innerHTML = `
     <h2>Game Over</h2>
-    <p>Your score: ${score}</p>
+    <p>Score: ${score}</p>
+    <p>High Score: ${highScore}</p>
     <button onclick="location.reload()">Restart</button>
   `;
 }
@@ -117,7 +124,6 @@ text.addEventListener("input", (e) => {
     updateScore();
     addWordToDOM();
 
-    // ADD TIME (inte ersätta!)
     if (difficulty === "hard") {
       time += 2;
     } else if (difficulty === "medium") {
@@ -136,8 +142,11 @@ settingsBtn.addEventListener("click", () => {
   settings.classList.toggle("show");
 });
 
+difficultySelect.value = difficulty;
+
 difficultySelect.addEventListener("change", (e) => {
   difficulty = e.target.value;
+  localStorage.setItem("difficulty", difficulty);
 });
 
 // ================= INIT =================
