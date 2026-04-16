@@ -1,32 +1,37 @@
-// MATRIX BACKGROUND (NO HTML EDIT)
+// ================= MATRIX BACKGROUND =================
 const canvas = document.createElement("canvas");
 canvas.id = "matrix";
 document.body.appendChild(canvas);
 
 const ctx = canvas.getContext("2d");
 
-function resizeCanvas() {
+let fontSize = 14;
+let columns;
+let drops;
+
+function setupMatrix() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+
+  columns = Math.floor(canvas.width / fontSize);
+  drops = Array(columns).fill(1);
 }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+
+setupMatrix();
+window.addEventListener("resize", setupMatrix);
 
 const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*+-";
-const fontSize = 14;
-
-let columns = Math.floor(canvas.width / fontSize);
-let drops = Array(columns).fill(1);
 
 function drawMatrix() {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#00ff00";
+  ctx.fillStyle = "#00ff9f";
   ctx.font = fontSize + "px monospace";
 
   for (let i = 0; i < drops.length; i++) {
     const char = letters[Math.floor(Math.random() * letters.length)];
+
     ctx.fillText(char, i * fontSize, drops[i] * fontSize);
 
     if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
@@ -39,7 +44,7 @@ function drawMatrix() {
 
 setInterval(drawMatrix, 33);
 
-// GAME LOGIC
+// ================= GAME LOGIC =================
 const word = document.getElementById("word");
 const text = document.getElementById("text");
 const scoreEl = document.getElementById("score");
@@ -61,65 +66,72 @@ let time = 10;
 let timeInterval;
 let difficulty = "easy";
 
-// WORD
+// ================= WORD =================
 function getRandomWord() {
   return words[Math.floor(Math.random() * words.length)];
 }
 
-function addWord() {
+function addWordToDOM() {
   randomWord = getRandomWord();
   word.innerText = randomWord;
 }
 
-// SCORE
+// ================= SCORE =================
 function updateScore() {
   score++;
   scoreEl.innerText = score;
 }
 
-// GAME OVER
-function gameOver() {
-  clearInterval(timeInterval);
-
-  endGameEl.innerHTML = `
-    <h2>Game Over</h2>
-    <p>Score: ${score}</p>
-    <button onclick="location.reload()">Restart</button>
-  `;
-}
-
-// TIMER
+// ================= TIME =================
 function updateTime() {
   time--;
   timeEl.innerText = time + "s";
 
-  if (time === 0) gameOver();
+  if (time <= 0) {
+    gameOver();
+  }
 }
 
 function startTimer() {
+  clearInterval(timeInterval);
   timeInterval = setInterval(updateTime, 1000);
 }
 
-// START
-function init() {
-  addWord();
-  startTimer();
+// ================= GAME OVER =================
+function gameOver() {
+  clearInterval(timeInterval);
+
+  endGameEl.style.display = "flex";
+  endGameEl.innerHTML = `
+    <h2>Game Over</h2>
+    <p>Your score: ${score}</p>
+    <button onclick="location.reload()">Restart</button>
+  `;
 }
-init();
 
-// INPUT
+// ================= INPUT =================
 text.addEventListener("input", (e) => {
-  if (e.target.value === randomWord) {
-    updateScore();
-    e.target.value = "";
-    addWord();
+  const insertedText = e.target.value;
 
-    time = difficulty === "hard" ? 3 : difficulty === "medium" ? 5 : 10;
+  if (insertedText === randomWord) {
+    updateScore();
+    addWordToDOM();
+
+    // ADD TIME (inte ersätta!)
+    if (difficulty === "hard") {
+      time += 2;
+    } else if (difficulty === "medium") {
+      time += 3;
+    } else {
+      time += 5;
+    }
+
     timeEl.innerText = time + "s";
+    e.target.value = "";
   }
 });
 
-// SETTINGS
+// ================= SETTINGS =================
 settingsBtn.addEventListener("click", () => {
   settings.classList.toggle("show");
 });
@@ -127,3 +139,12 @@ settingsBtn.addEventListener("click", () => {
 difficultySelect.addEventListener("change", (e) => {
   difficulty = e.target.value;
 });
+
+// ================= INIT =================
+function init() {
+  addWordToDOM();
+  startTimer();
+  text.focus();
+}
+
+init();

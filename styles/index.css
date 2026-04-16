@@ -2,16 +2,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: "Courier New", monospace;
 }
 
 body {
   overflow: hidden;
   background: black;
-  color: white;
+  color: #00ff9f;
 }
 
-/* MATRIX CANVAS (skapad via JS) */
+/* MATRIX */
 #matrix {
   position: fixed;
   top: 0;
@@ -21,27 +21,63 @@ body {
   z-index: 0;
 }
 
-/* GAME UI */
+/* MAIN CONTAINER */
 .container {
   position: relative;
   z-index: 2;
-  background: rgba(20, 20, 20, 0.9);
-  padding: 30px;
-  width: 400px;
+  background: rgba(10, 10, 10, 0.85);
+  padding: 35px;
+  width: 420px;
   margin: 100px auto;
-  border-radius: 12px;
+  border-radius: 14px;
   text-align: center;
-  box-shadow: 0 0 20px rgba(0,255,0,0.15);
+
+  border: 1px solid rgba(0,255,159,0.2);
+
+  box-shadow:
+    0 0 10px rgba(0,255,159,0.2),
+    0 0 30px rgba(0,255,159,0.1),
+    inset 0 0 10px rgba(0,255,159,0.05);
+}
+
+/* HEADINGS */
+h1, h2 {
+  margin-bottom: 10px;
+  text-shadow: 0 0 8px rgba(0,255,159,0.6);
+}
+
+/* WORD */
+#word {
+  font-size: 28px;
+  margin: 15px 0;
+  letter-spacing: 2px;
 }
 
 /* INPUT */
 input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-top: 10px;
-  border: none;
   border-radius: 6px;
+  border: 1px solid rgba(0,255,159,0.3);
   outline: none;
+
+  background: black;
+  color: #00ff9f;
+
+  box-shadow: 0 0 10px rgba(0,255,159,0.2);
+}
+
+input:focus {
+  box-shadow: 0 0 15px rgba(0,255,159,0.5);
+}
+
+/* SCORE & TIME */
+.score-time {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 14px;
 }
 
 /* SETTINGS BUTTON */
@@ -50,12 +86,20 @@ input {
   top: 20px;
   right: 20px;
   z-index: 3;
-  background: #111;
-  color: white;
-  border: none;
+
+  background: black;
+  color: #00ff9f;
+
+  border: 1px solid rgba(0,255,159,0.4);
   padding: 10px;
   border-radius: 50%;
   cursor: pointer;
+
+  box-shadow: 0 0 10px rgba(0,255,159,0.3);
+}
+
+.settings-btn:hover {
+  background: rgba(0,255,159,0.1);
 }
 
 /* SETTINGS PANEL */
@@ -64,9 +108,13 @@ input {
   top: 70px;
   right: 20px;
   z-index: 3;
-  background: #111;
+
+  background: rgba(10,10,10,0.95);
   padding: 15px;
   border-radius: 10px;
+
+  border: 1px solid rgba(0,255,159,0.3);
+
   display: none;
 }
 
@@ -79,4 +127,48 @@ select {
   width: 100%;
   margin-top: 10px;
   padding: 8px;
+
+  background: black;
+  color: #00ff9f;
+  border: 1px solid rgba(0,255,159,0.3);
+}
+
+/* GAME OVER SCREEN */
+#end-game-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.95);
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  z-index: 5;
+}
+
+#end-game-container h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+#end-game-container button {
+  margin-top: 15px;
+  padding: 10px 20px;
+
+  background: black;
+  color: #00ff9f;
+
+  border: 1px solid rgba(0,255,159,0.4);
+  cursor: pointer;
+
+  box-shadow: 0 0 10px rgba(0,255,159,0.3);
+}
+
+#end-game-container button:hover {
+  background: rgba(0,255,159,0.1);
 }
