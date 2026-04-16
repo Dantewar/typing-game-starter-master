@@ -1,41 +1,49 @@
-# Typing Game Starter
+# Typing Game Documentation
 
-## Project Description
-This project provides a basic framework for a typing game that helps users improve their typing speed and accuracy. The game challenges players to type a series of words as quickly as possible while maintaining accuracy.
-
-## Architecture
-The application is structured into several key components:
-- **Frontend:** The user interface is built using HTML, CSS, and JavaScript, allowing for an interactive experience.
-- **Backend:** A simple Node.js server can be used to manage game sessions and user statistics.
+## Project Overview
+Welcome to the Typing Game project! This interactive game aims to help users improve their typing skills through a fun and engaging interface. The project consists of three primary files: `index.html`, `scripts/index.js`, and `styles/index.css`, each playing a crucial role in the overall functionality and design of the game.
 
 ## Features
-- Dynamic word generation
-- Real-time typing feedback
-- User logging and score tracking
-- Responsive design for various devices
+- Engaging user interface with responsive design
+- Tracks user typing speed and accuracy
+- Displays real-time results and feedback
+- Customizable word lists for practice
+- Visual effects that enhance user experience
+
+## Architecture Breakdown
+The project follows a straightforward architecture:
+- **index.html**: The main entry point of the application. It includes links to the CSS for styling and the JavaScript for functionality.
+- **scripts/index.js**: The core functionality of the game is implemented here, including event listeners for user input and logic for scoring and timer functionalities.
+- **styles/index.css**: Contains styles that define the look and feel of the game, ensuring a seamless and appealing user experience.
+
+## Quick Start Guide
+1. Clone the repository: `git clone https://github.com/Dantewar/typing-game-starter-master`
+2. Open `index.html` in your web browser to start the game.
+3. Follow the on-screen instructions to begin typing the presented words.
+
+## Customization Options
+- To customize the word list, edit the appropriate array in `scripts/index.js`.
+- Adjust the game timer and scoring rules in the same script to fit your preference.
+
+## Technical Specifications
+- **HTML5**: Utilizes modern HTML5 features for structure.
+- **CSS3**: Employs CSS3 for styling, supporting various screen sizes with responsive design principles.
+- **JavaScript ES6**: The game logic is implemented using ES6 for improved code readability and performance.
+
+## Future Enhancements
+- Implementation of advanced game modes, such as multiplayer and timed challenges.
+- Support for different languages to enhance accessibility.
+- Integration of leaderboard features to track user progress over time.
+
+## Game Mechanics
+The Typing Game operates on the following mechanics:
+- Users are presented with a random word, which they must type accurately before the timer runs out.
+- The game measures typing speed in words per minute (WPM) and accuracy percentage.
+
+## Keyboard Concepts Demonstrated
+Through this game, users can familiarize themselves with keyboard layout and practice common typing patterns.
 
 ## Usage Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Dantewar/typing-game-starter-master.git
-   ```
-2. Change into the project directory:
-   ```bash
-   cd typing-game-starter-master
-   ```
-3. Install the necessary dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the application:
-   ```bash
-   npm start
-   ```
-5. Open a web browser and navigate to `http://localhost:3000` to play the game.
-
-## Code Explanation
-- The main file is `index.js`, which initializes the game and sets up event listeners for capturing user input.
-- The `wordList.js` file contains a list of words that are randomly selected for typing challenges.
-- The scoring system is managed in `score.js`, which updates user scores based on their performance.
-
-This README serves as a guide to understanding and using the Typing Game Starter. Happy typing!
+1. Start the game by opening `index.html`.
+2. Type the displayed words as quickly and accurately as possible.
+3. Review your WPM and accuracy after each round.
